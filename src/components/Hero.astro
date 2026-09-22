@@ -1,0 +1,56 @@
+---
+import { buttonVariants } from "@/components/ui/button";
+import { siteConfig } from "@/config";
+import { cn } from "@/lib/utils";
+---
+
+<section class="relative flex min-h-[100svh] items-center justify-center overflow-hidden">
+  {/*
+    Hero video tips:
+    - Encode before commit: H.264, yuv420p, no audio, -movflags +faststart, max 1920px, CRF ~28.
+    - prefers-reduced-motion: reduce hides .hero-video (see global.css) and keeps the poster.
+    - preload="metadata" so mobile does not pull the whole file up front.
+    - Cache MP4 as a static public file (see nginx.conf.template). Files much larger than a few MB
+      should live on Cloud Storage; swap the URL via siteConfig.heroVideo instead of baking into the image.
+  */}
+  <video
+    class="hero-video absolute inset-0 h-full w-full object-cover"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    poster={siteConfig.heroPoster}
+  >
+    <source src={siteConfig.heroVideo} type="video/mp4" />
+  </video>
+
+  <div
+    class="absolute inset-0 bg-gradient-to-b from-[oklch(0.16_0.04_255/0.75)] via-[oklch(0.16_0.04_255/0.7)] to-[oklch(0.16_0.04_255/0.9)]"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="relative z-10 mx-auto flex max-w-3xl flex-col items-center gap-6 px-4 py-24 text-center sm:px-6">
+    <p class="text-sm font-medium uppercase tracking-widest text-secondary">
+      {siteConfig.name}
+    </p>
+    <h1 class="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl">
+      Built for clarity in the dark
+    </h1>
+    <p class="max-w-xl text-base text-muted-foreground sm:text-lg">
+      {siteConfig.description}
+    </p>
+    <div class="flex w-full max-w-sm flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center">
+      <a href="/blog" class={cn(buttonVariants({ size: "lg" }), "w-full sm:w-auto")}>
+        Read the blog
+      </a>
+      <a
+        href="/about"
+        class={cn(buttonVariants({ variant: "secondary", size: "lg" }), "w-full sm:w-auto")}
+      >
+        About us
+      </a>
+    </div>
+  </div>
+</section>

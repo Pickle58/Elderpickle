@@ -1,0 +1,43 @@
+---
+import MobileNav from "@/components/MobileNav";
+import { buttonVariants } from "@/components/ui/button";
+import { siteConfig } from "@/config";
+import { cn } from "@/lib/utils";
+
+const pathname = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-40 border-b border-border/80 bg-background/90 backdrop-blur-md">
+  <div class="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-4 sm:px-6">
+    <a href="/" class="font-semibold tracking-tight text-foreground hover:text-primary">
+      {siteConfig.name}
+    </a>
+
+    <nav class="hidden items-center gap-1 md:flex" aria-label="Main">
+      {
+        siteConfig.nav.map((item) => {
+          const active =
+            item.href === "/"
+              ? pathname === "/"
+              : pathname === item.href || pathname.startsWith(`${item.href}/`);
+          return (
+            <a
+              href={item.href}
+              class={cn(
+                buttonVariants({ variant: active ? "secondary" : "ghost", size: "sm" }),
+                active && "pointer-events-none",
+              )}
+              aria-current={active ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          );
+        })
+      }
+    </nav>
+
+    <div class="md:hidden">
+      <MobileNav client:load pathname={pathname} links={[...siteConfig.nav]} />
+    </div>
+  </div>
+</header>

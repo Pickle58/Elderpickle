@@ -1,0 +1,12 @@
+node_modules
+dist
+.astro
+.git
+.gitignore
+.env
+.env.*
+npm-debug.log*
+.DS_Store
+*.md
+!README.md
+!src/content/**/*.md

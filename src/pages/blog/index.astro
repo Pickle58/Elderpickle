@@ -1,0 +1,55 @@
+---
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { buttonVariants } from "@/components/ui/button";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { cn } from "@/lib/utils";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const dateFmt = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<BaseLayout title="Blog" description="Notes and updates from Elderpickle.">
+  <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+    <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Blog</h1>
+    <p class="mt-3 text-muted-foreground">Titles, dates, and short summaries from the content collection.</p>
+
+    <ul class="mt-10 space-y-4">
+      {
+        posts.map((post) => (
+          <li>
+            <Card className="transition-colors hover:border-primary/50">
+              <CardHeader>
+                <p class="text-sm text-secondary">{dateFmt.format(post.data.pubDate)}</p>
+                <CardTitle className="text-xl">
+                  <a href={`/blog/${post.id}`} class="hover:text-primary">
+                    {post.data.title}
+                  </a>
+                </CardTitle>
+                <CardDescription>{post.data.description}</CardDescription>
+                <a
+                  href={`/blog/${post.id}`}
+                  class={cn(buttonVariants({ variant: "link", size: "sm" }), "w-fit px-0")}
+                >
+                  Read post
+                </a>
+              </CardHeader>
+            </Card>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</BaseLayout>
