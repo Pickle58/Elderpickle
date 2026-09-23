@@ -13,6 +13,11 @@ const site = process.env.SITE ?? "https://example.com";
 // https://astro.build/config
 export default defineConfig({
   site,
+  // Listen on the IPv4 loopback so http://127.0.0.1:4321 accepts connections.
+  server: {
+    host: "127.0.0.1",
+    port: 4321,
+  },
   vite: {
     plugins: [tailwindcss()],
   },
