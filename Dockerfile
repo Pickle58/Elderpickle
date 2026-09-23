@@ -29,7 +29,7 @@ EXPOSE 80 443
 
 # GCE VM deploy:
 #   docker build --build-arg SITE=https://your.domain -t elderpickle .
-#   docker run -d -p 80:80 -p 443:443 \
+#   docker run -d --restart unless-stopped -p 80:80 -p 443:443 \
 #     -e SITE_ADDRESS=your.domain \
 #     -v caddy_data:/data \
 #     --name elderpickle elderpickle
