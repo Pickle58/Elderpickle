@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection, render } from "astro:content";
 
@@ -18,14 +19,46 @@ const dateFmt = new Intl.DateTimeFormat("en-US", {
   month: "long",
   day: "numeric",
 });
+
+const cover = post.data.cover;
+const ogImage = cover ? new URL(cover.src, Astro.site).href : undefined;
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description}>
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  image={ogImage}
+>
   <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6">
     <p class="text-sm font-medium text-secondary">{dateFmt.format(post.data.pubDate)}</p>
     <h1 class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">{post.data.title}</h1>
     <p class="mt-4 text-lg text-muted-foreground">{post.data.description}</p>
-    <div class="article-body mt-10 space-y-4 text-base leading-relaxed text-foreground [&_a]:text-primary [&_a]:underline [&_code]:rounded [&_code]:bg-muted [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-secondary [&_h2]:mt-8 [&_h2]:text-2xl [&_h2]:font-semibold [&_li]:ml-5 [&_li]:list-disc [&_p]:text-muted-foreground [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:bg-muted [&_pre]:p-4 [&_strong]:text-foreground">
+    {
+      cover && (
+        <Image
+          src={cover}
+          alt=""
+          class="mt-8 w-full rounded-lg object-cover"
+          widths={[640, 960, 1200]}
+          sizes="(max-width: 768px) 100vw, 768px"
+        />
+      )
+    }
+    <div
+      class:list={[
+        "article-body mt-10 space-y-4 text-base leading-relaxed text-foreground",
+        "[&_a]:text-primary [&_a]:underline",
+        "[&_code]:rounded [&_code]:bg-muted [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-secondary",
+        "[&_h2]:mt-8 [&_h2]:text-2xl [&_h2]:font-semibold",
+        "[&_li]:ml-5 [&_li]:list-disc",
+        "[&_p]:text-muted-foreground",
+        "[&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:bg-muted [&_pre]:p-4",
+        "[&_strong]:text-foreground",
+        "[&_img]:mx-auto [&_img]:max-w-full [&_img]:rounded-lg",
+        "[&_figure]:my-8 [&_figure]:space-y-2",
+        "[&_figcaption]:text-center [&_figcaption]:text-sm [&_figcaption]:text-muted-foreground",
+      ]}
+    >
       <Content />
     </div>
     <p class="mt-12">

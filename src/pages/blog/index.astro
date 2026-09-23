@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import {
   Card,
   CardDescription,
@@ -30,7 +31,18 @@ const dateFmt = new Intl.DateTimeFormat("en-US", {
       {
         posts.map((post) => (
           <li>
-            <Card className="transition-colors hover:border-primary/50">
+            <Card className="overflow-hidden transition-colors hover:border-primary/50">
+              {post.data.cover && (
+                <a href={`/blog/${post.id}`} class="block">
+                  <Image
+                    src={post.data.cover}
+                    alt=""
+                    class="aspect-[2/1] w-full object-cover"
+                    widths={[400, 800]}
+                    sizes="(max-width: 768px) 100vw, 768px"
+                  />
+                </a>
+              )}
               <CardHeader>
                 <p class="text-sm text-secondary">{dateFmt.format(post.data.pubDate)}</p>
                 <CardTitle className="text-xl">

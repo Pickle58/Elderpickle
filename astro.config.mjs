@@ -1,7 +1,9 @@
 // @ts-check
 
+import markdoc from "@astrojs/markdoc";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
+import keystatic from "@keystatic/astro";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 
@@ -10,11 +12,20 @@ import { defineConfig } from "astro/config";
 // Example: docker build --build-arg SITE=https://your-domain.com -t elderpickle .
 const site = process.env.SITE ?? "https://example.com";
 
+// Keystatic injects server routes (/keystatic, /api/keystatic). Enable only for
+// `astro dev` so production stays a static Caddy build with no Node adapter.
+const enableKeystatic = process.argv.includes("dev");
+
 // https://astro.build/config
 export default defineConfig({
   site,
   vite: {
     plugins: [tailwindcss()],
   },
-  integrations: [react(), sitemap()],
+  integrations: [
+    react(),
+    markdoc(),
+    sitemap(),
+    ...(enableKeystatic ? [keystatic()] : []),
+  ],
 });
