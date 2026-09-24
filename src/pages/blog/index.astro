@@ -18,6 +18,7 @@ const dateFmt = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
   month: "long",
   day: "numeric",
+  timeZone: "UTC",
 });
 ---
 
@@ -32,6 +33,15 @@ const dateFmt = new Intl.DateTimeFormat("en-US", {
           <li>
             <Card className="transition-colors hover:border-primary/50">
               <CardHeader>
+                {post.data.cover && (
+                  <img
+                    src={post.data.cover.src}
+                    alt=""
+                    width={post.data.cover.width}
+                    height={post.data.cover.height}
+                    class="mb-4 aspect-[16/9] w-full rounded-md object-cover"
+                  />
+                )}
                 <p class="text-sm text-secondary">{dateFmt.format(post.data.pubDate)}</p>
                 <CardTitle className="text-xl">
                   <a href={`/blog/${post.id}`} class="hover:text-primary">
