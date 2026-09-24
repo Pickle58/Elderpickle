@@ -11,7 +11,13 @@ npm install
 npm run dev
 ```
 
-Open the URL printed in the terminal. Pages live under `src/pages`; blog posts are Markdown in `src/content/blog`.
+Open the URL printed in the terminal. Pages live under `src/pages`. Blog posts are Markdoc in `src/content/blog`.
+
+## Editing posts
+
+With the dev server running, open [http://127.0.0.1:4321/keystatic](http://127.0.0.1:4321/keystatic).
+
+The editor saves posts and images into this repo. It is only available on localhost. The deployed site has no admin. Commit the new `.mdoc` and image files, push, and rebuild the Docker image to publish.
 
 ## Hero video
 
@@ -29,5 +35,6 @@ Build the Docker image with your public origin:
 
 ```bash
 docker build --build-arg SITE=https://your-domain.com -t elderpickle .
-gcloud run deploy elderpickle --source . --region us-central1 --allow-unauthenticated
 ```
+
+The runtime image is Caddy serving the static `dist` folder. Keystatic is not part of that image.
